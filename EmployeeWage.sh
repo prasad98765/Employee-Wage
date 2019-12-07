@@ -1,45 +1,48 @@
+
 #!/bin/bash -x
+echo "Welcome to Employee Wage Computation"
 
-echo "Welcome to Employee Wage Computation Program"
 WAGE_PER_HOUR=20
-WORKING_HOUR=8
-PART_TIME=0
-FULL_TIME=1
-ABSENT=2
-WORKING_DAY_PER_MONTH=20
-TOTAL_WORKING_HRS=100
-COUNT=0
+FULL_DAY_WORKING_HOUR=8
+HALF_DAY_WORKING_HOUR=4
 
+declare -A Wage
 
-function partFulltimeWork(){
-partFullTime=$1
-case $partFullTime in
-      $PART_TIME)
-  					DayWorkingHour=4
-               ;;
-      $FULL_TIME)
-             	DayWorkingHour=8
-               ;;
-      $ABSENT)
-               DayWorkingHour=0
-      esac
-echo $DayWorkingHour
+days=0
+Total_Wage=0
+Total_Working_Hours=0
+function getHours(){
+	dailyhrs=$1
+	case $dailyhrs in
+   0)
+	dailyhrs=0
+   ;;
+   1)
+   dailyhrs=$HALF_DAY_WORKING_HOUR
+   ;;
+   2)
+   dailyhrs=$FULL_DAY_WORKING_HOUR
+   ;;
+esac
+echo $dailyhrs
 }
-while [[	DAY -lt WORKING_DAY_PER_MONTH ]]
+
+
+while [[ $Total_working_hours -le 100 && $days -le 20 ]] 
 do
-		partFullTime=$((RANDOM%3))
-		HRS="$( partFulltimeWork $partFullTime )"
-		#EMPLOYEE_TOTAL_HRS=$(( $HRS + $EMPLOYEE_TOTAL_HRS )) 
-		dailyWage=$(( $WAGE_PER_HOUR * $HRS ))
-		dailyWage[((COUNT++))]=$dailyWage
-      hrs=$(( $TOTAL_HRS + $dailyWage ))
-		totalHrs[((COUNT++))]=$hrs 
-		DAY=$(($DAY + 1))
+	days=$(($days+1))
+	attendance=$((RANDOM%2))
+	hrs=$(getHours $attendance)
+	daily=$(( $hrs * $WAGE_PER_HOUR ))
+	# Total_Working_Hours=$(($Total_Working_Hours + $hrs))
+	Total=$(( $Total+$daily ))
+	Wage["$days"]=" $days $daily  $Total"
+	
 done
 
-
-echo ${dailyWage[@]}
-echo ${totalHrs[@]}
-
-
+echo ${!Wage[@]}
+for(( i=1;i<=20;i++ ))
+do
+	echo "days${Wage[$i]}"
+done
 
