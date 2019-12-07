@@ -7,31 +7,36 @@ PART_DAY_WORKING_HOUR=4
 FULL_DAY_WORKING_HOUR=8
 PART_TIME=0
 FULL_TIME=1
+ABSENT=2
+WORKING_DAY_PER_MONTH=20
+DAILY_WAGE=0
+DAY=1
 	employee=$((RANDOM%2))
-
 	if [[ $employee -eq 0 ]]
 	then
-		echo "Absent"
+		echo "Employee Absent"
 	else
-		echo "Present"
-		dailyWage=$(( $WAGE_PER_HOUR * $WORKING_HOUR ))
-		echo $dailyWage
-		 partFullTime=$((RANDOM%2))
-
-		case $partFullTime in
+		echo "Emoloyee Present"
+		while [[ $DAY -lt 20 ]]
+		do 
+		 	partFullTime=$((RANDOM%3))
+			case $partFullTime in
 			$PART_TIME)
-				   echo "Employee is Parttime"
+				   echo "He is work Parttime"
 				   echo "Working hour is" $PART_DAY_WORKING_HOUR
-				   dailyWage=$(( $WAGE_PER_HOUR * $PART_DAY_WORKING_HOUR ))
-				   echo "Daily Wage" $dailyWage	
+				   DAILY_WAGE=$(( $WAGE_PER_HOUR * $PART_DAY_WORKING_HOUR ))
 				   ;;
 			$FULL_TIME)
-				   echo "Emplyee is FullTime"
+				   echo "He is work FullTime"
 				   echo "Working hour is" $FULL_DAY_WORKING_HOUR
-				   dailyWage=$(( $WAGE_PER_HOUR * $FULL_DAY_WORKING_HOUR ))
-                                   echo "Daily Wage" $dailyWage 
+				   DAILY_WAGE=$(( $WAGE_PER_HOUR * $FULL_DAY_WORKING_HOUR ))
 				   ;;
+			$ABSENT)
+					echo "Employee Absent"
 		esac
+		DAY=$(($DAY + 1))
+		echo "Daily Wage $DAY" $DAILY_WAGE
+		done
 	fi
 
 
